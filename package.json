@@ -1,0 +1,37 @@
+{
+  "name": "lets-express",
+  "version": "1.0.0",
+  "main": "app.js",
+  "description": "Lets express",
+  "repository": "git@github.com:cham11ng/lets-express.git",
+  "author": "Sagar Chamling <sgr.raee@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "javascript",
+    "node",
+    "express",
+    "es6",
+    "api"
+  ],
+  "scripts": {
+    "start": "node dist",
+    "lint": "eslint src test; exit 0",
+    "build": "rimraf dist && babel src -D --out-dir dist",
+    "start:dev": "nodemon --watch .env --watch src --exec babel-node src --source-maps"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "eslint": "^4.12.1",
+    "nodemon": "^1.12.5",
+    "rimraf": "^2.6.2",
+    "youch": "^2.0.5"
+  },
+  "dependencies": {
+    "bookshelf": "^0.12.0",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "knex": "^0.14.2"
+  }
+}

@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+  - "node"
+  - "8"
+before_script:
+  - cp .env.example .env
+  - yarn install
+  - yarn build
+  - yarn start &
+script:
+  - null

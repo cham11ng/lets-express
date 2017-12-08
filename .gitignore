@@ -57,3 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
+# IntelliJ IDE
+.idea
+
+# Build directory
+dist
