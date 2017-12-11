@@ -1,0 +1,8 @@
+.env
+.env.example
+.editorconfig
+.gitignore
+LICENSE
+README.md
+dist/
+node_modules/
