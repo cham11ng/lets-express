@@ -1,10 +1,9 @@
 version: '3'
 services:
   web:
-    build: ./web
-    working_dir: '/home/cham11ng/lets-express'
+    build: .
     volumes:
-      - /home/cham11ng/WebstormProjects/lets-express:/home/cham11ng/lets-express
+      - .env.docker:/usr/src/app/.env
     ports:
       - "8888:8888"
-    command: bash -c "cd /home/cham11ng/lets-express && yarn install && yarn start:dev"
+    command: bash -c "yarn install && yarn start:dev"
