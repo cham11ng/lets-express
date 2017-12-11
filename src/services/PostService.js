@@ -7,7 +7,7 @@ import Post from '../models/Post';
  * @return {Promise}
  */
 export function getAllPosts() {
-  return Post.fetchAll();
+  return Post.fetchAll({ withRelated: ['user'] });
 }
 
 /**
@@ -17,7 +17,7 @@ export function getAllPosts() {
  * @return {Promise}
  */
 export function getPost(id) {
-  return new Post({ id }).fetch().then(post => {
+  return new Post({ id }).fetch({ withRelated: ['user'] }).then(post => {
     if (!post) {
       throw new Boom.notFound('Post not found');
     }
