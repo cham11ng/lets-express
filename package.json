@@ -17,12 +17,18 @@
     "start": "node dist",
     "lint": "eslint src test; exit 0",
     "build": "rimraf dist && babel src -D --out-dir dist",
+    "seed": "knex seed:run --knexfile src/config/knexfile.js",
+    "migrate": "knex migrate:latest --knexfile src/config/knexfile.js",
+    "rollback": "knex migrate:rollback --knexfile src/config/knexfile.js",
+    "make:seeder": "knex seed:make --knexfile src/config/knexfile.js",
+    "make:migration": "knex migrate:make --knexfile src/config/knexfile.js",
     "start:dev": "nodemon --watch .env --watch src --exec babel-node src --source-maps"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
     "eslint": "^4.12.1",
     "nodemon": "^1.12.5",
     "rimraf": "^2.6.2",
@@ -32,6 +38,7 @@
     "bookshelf": "^0.12.0",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
-    "knex": "^0.14.2"
+    "knex": "^0.14.2",
+    "pg": "^7.4.0"
   }
 }

@@ -1,0 +1,28 @@
+/**
+ * Create table.
+ *
+ * @param  {object} knex
+ * @return {Promise}
+ */
+export function up(knex, Promise) {
+  return knex.schema.createTable('table_name', function(table) {
+    table.increments();
+    //
+
+    table
+      .timestamp('created_at')
+      .notNull()
+      .defaultTo(knex.raw('now()'));
+    table.timestamp('updated_at').notNull();
+  });
+}
+
+/**
+ * Drop table.
+ *
+ * @param  {object} knex
+ * @return {Promise}
+ */
+export function down(knex, Promise) {
+  return knex.schema.dropTable('table_name');
+}
