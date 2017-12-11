@@ -2,10 +2,14 @@ language: node_js
 node_js:
   - "node"
   - "8"
+services:
+  - postgresql
 before_script:
   - cp .env.example .env
   - yarn install
   - yarn build
+  - psql -c 'create database express_test;' -U postgres
+  - APP_ENV=test npm run migrate
   - yarn start &
 script:
   - null
