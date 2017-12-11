@@ -9,7 +9,7 @@ export function up(knex) {
     table.increments();
     table.string('title').notNull();
     table.string('body').notNull();
-    table.integer('user_id').unsigned();
+    table.integer('user_id').unsigned().notNull();
     table.foreign('user_id').references('users.id');
 
     table

@@ -1,10 +1,12 @@
 import express from 'express';
 import api from './routes/api';
 import config from './config/app';
+import bodyParser from 'body-parser';
 import * as handlers from './middlewares/handlers';
 
 const app = express();
 
+app.use(bodyParser.json());
 app.use('/api', api);
 
 app.use(handlers.convertExceptionToHTMLResponse);
