@@ -7,7 +7,7 @@ import User from '../models/User';
  * @return {Promise}
  */
 export function getAllUsers() {
-  return User.fetchAll();
+  return User.fetchAll({ withRelated: ['posts'] });
 }
 
 /**
@@ -17,7 +17,7 @@ export function getAllUsers() {
  * @return {Promise}
  */
 export function getUser(id) {
-  return new User({ id }).fetch().then(user => {
+  return new User({ id }).fetch({ withRelated: ['posts'] }).then(user => {
     if (!user) {
       throw new Boom.notFound('User not found');
     }
