@@ -58,7 +58,7 @@ typings/
 .env
 
 # IntelliJ IDE
-.idea
+.idea/
 
 # Build directory
-dist
+dist/
