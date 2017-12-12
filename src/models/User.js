@@ -1,4 +1,5 @@
 import Post from './Post';
+import Token from './Token';
 import bookshelf from '../config/database';
 
 const TABLE_NAME = 'users';
@@ -13,6 +14,10 @@ class User extends bookshelf.Model {
 
   get hasTimestamps() {
     return true;
+  }
+
+  token() {
+    return this.hasOne(Token);
   }
 
   posts() {

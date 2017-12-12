@@ -2,6 +2,8 @@ import { Router } from 'express';
 import config from '../config/app';
 import UsersController from '../controllers/UsersController';
 import PostsController from '../controllers/PostsController';
+import LoginController from '../controllers/LoginController';
+import RegisterController from '../controllers/RegisterController';
 
 /**
  * Contains all API routes for the application.
@@ -14,6 +16,9 @@ router.get('/', (request, response) => {
     apiVersion: config.APP_VERSION
   });
 });
+
+router.use('/login', LoginController);
+router.use('/register', RegisterController);
 
 router.use('/users', UsersController);
 router.use('/posts', PostsController);

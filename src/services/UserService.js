@@ -1,5 +1,7 @@
 import Boom from 'boom';
+import bcrypt from 'bcrypt';
 import User from '../models/User';
+import auth from '../config/auth';
 
 /**
  * Get all users.
@@ -27,13 +29,45 @@ export function getUser(id) {
 }
 
 /**
+ * Get a user.
+ *
+ * @param  {Number|String}  email
+ * @return {Promise}
+ */
+export function getUserByEmail(email) {
+  return new User({ email }).fetch().then(user => {
+    if (!user) {
+      return null;
+    }
+
+    return user;
+  });
+}
+
+/**
  * Create new user.
  *
  * @param  {Object}  user
  * @return {Promise}
  */
-export function createUser(user) {
-  return new User({ name: user.name }).save().then(user => user.refresh());
+export function register(user) {
+  return new User({
+    name: user.name,
+    email: user.email,
+    password: bcrypt.hashSync(user.password, parseInt(auth.saltRounds))
+  }).save().then(user => user.refresh());
+}
+
+/**
+ * Login user.
+ *
+ * @param  {Object}  currentUser
+ * @return {Promise}
+ */
+export function login(currentUser) {
+  return getUserByEmail(currentUser.email).then(user => {
+    return bcrypt.compareSync(currentUser.password, user.get('password'));
+  });
 }
 
 /**
