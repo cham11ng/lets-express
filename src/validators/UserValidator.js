@@ -6,8 +6,30 @@ const SCHEMA = {
   name: Joi.string()
     .label('Name')
     .max(90)
+    .required(),
+  email: Joi.string()
+    .label('Email')
+    .max(90)
+    .required(),
+  password: Joi.string()
+    .label('Password')
+    .min(6)
+    .max(90)
     .required()
 };
+
+const LOGIN_SCHEMA = {
+  email: Joi.string()
+    .label('Email')
+    .max(90)
+    .required(),
+  password: Joi.string()
+    .label('Password')
+    .min(6)
+    .max(90)
+    .required()
+};
+
 
 /**
  * Validate create/update user request.
@@ -19,6 +41,20 @@ const SCHEMA = {
  */
 export function userValidator(request, response, next) {
   return validate(request.body, SCHEMA)
+    .then(() => next())
+    .catch(err => next(err));
+}
+
+/**
+ * Validate user login request.
+ *
+ * @param  {object}   request
+ * @param  {object}   response
+ * @param  {function} next
+ * @return {Promise}
+ */
+export function loginValidator(request, response, next) {
+  return validate(request.body, LOGIN_SCHEMA)
     .then(() => next())
     .catch(err => next(err));
 }
