@@ -2,6 +2,7 @@ import Boom from 'boom';
 import bcrypt from 'bcrypt';
 import User from '../models/User';
 import auth from '../config/auth';
+import { generateTokens } from '../utils/jwt';
 
 /**
  * Get all users.
@@ -9,7 +10,7 @@ import auth from '../config/auth';
  * @return {Promise}
  */
 export function getAllUsers() {
-  return User.fetchAll({ withRelated: ['posts'] });
+  return User.fetchAll({ withRelated: ['posts', 'token'] });
 }
 
 /**
@@ -19,7 +20,7 @@ export function getAllUsers() {
  * @return {Promise}
  */
 export function getUser(id) {
-  return new User({ id }).fetch({ withRelated: ['posts'] }).then(user => {
+  return new User({ id }).fetch({ withRelated: ['posts', 'token'] }).then(user => {
     if (!user) {
       throw new Boom.notFound('User not found');
     }
@@ -37,7 +38,7 @@ export function getUser(id) {
 export function getUserByEmail(email) {
   return new User({ email }).fetch().then(user => {
     if (!user) {
-      return null;
+      throw new Boom.notFound('User not found');
     }
 
     return user;
@@ -55,7 +56,9 @@ export function register(user) {
     name: user.name,
     email: user.email,
     password: bcrypt.hashSync(user.password, parseInt(auth.saltRounds))
-  }).save().then(user => user.refresh());
+  }).save().then((user) => {
+    return createSession(user);
+  });
 }
 
 /**
@@ -66,8 +69,21 @@ export function register(user) {
  */
 export function login(currentUser) {
   return getUserByEmail(currentUser.email).then(user => {
-    return bcrypt.compareSync(currentUser.password, user.get('password'));
+    if (bcrypt.compareSync(currentUser.password, user.get('password'))) {
+      return createSession(user);
+    }
   });
+}
+
+/**
+ *
+ */
+export function createSession(user) {
+  let jwt = generateTokens(user.refresh());
+  user.token().save({
+    refresh: jwt.refreshToken
+  });
+  return jwt;
 }
 
 /**
