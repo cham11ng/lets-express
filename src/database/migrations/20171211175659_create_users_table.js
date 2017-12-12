@@ -6,8 +6,10 @@
  */
 export function up(knex) {
   return knex.schema.createTable('users', table => {
-    table.increments();
+    table.increments().primary();
     table.string('name').notNull();
+    table.string('email').notNull().unique();
+    table.string('password').notNull();
 
     table
       .timestamp('created_at')
