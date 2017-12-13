@@ -1,50 +1,93 @@
-import { generateTokens, verifyRefreshToken } from '../utils/jwt';
-import Token from '../models/Token';
 import Boom from 'boom';
+import auth from '../config/auth';
+import Token from '../models/Token';
+import * as jwt from 'jsonwebtoken';
 
 /**
- * Create token
+ * Create session
  *
  * @param user
  * @returns {{accessToken: string, refreshToken: string}}
  */
-export function createToken(user) {
-  let jwt = generateTokens(user.refresh());
+export function createSession(user) {
+  let jwTokens = generateTokens({
+    id: user.get('id'),
+    name: user.get('name'),
+    email: user.get('email')
+  });
   user.token().save({
-    refresh: jwt.refreshToken
+    refresh: jwTokens.refreshToken
   });
 
-  return jwt;
+  return jwTokens;
 }
 
 /**
- * Destroy token
+ * Create AccessToken through RefreshToken
  *
- * @param token
+ * @param request
+ * @returns {Promise<{accessToken: string}>}
  */
-export async function destroyToken(token) {
+export async function createAccessToken(request) {
   try {
-    if (await verifyRefreshToken(token)) {
-      deleteToken(token);
-
-      return true;
-    }
-  } catch(error) {
+    return {
+      accessToken: generateAccessToken(request.userInfo)
+    };
+  } catch (error) {
     if (error.name === 'TokenExpiredError') {
-      deleteToken(token);
-      throw Boom.unauthorized('Token Expired');
+      throw Boom.unauthorized('Access Token Expired');
+    } else {
+      throw Boom.unauthorized('Invalid Access Token');
     }
-    throw Boom.unauthorized('Invalid Token');
   }
 }
 
 /**
- * Delete a token.
+ * Return access and refresh tokens.
  *
- * @param  {Number|String}  token
+ * @param data
+ * @returns {{accessToken: string, refreshToken: string}}
+ */
+export function generateTokens(data) {
+  return {
+    accessToken: generateAccessToken(data),
+    refreshToken: generateRefreshToken(data)
+  };
+}
+
+/**
+ * Return access token.
+ *
+ * @param data
+ * @returns {string}
+ */
+export function generateAccessToken(data) {
+  return jwt.sign({ data }, auth.accessTokenSalt, { expiresIn: parseInt(auth.accessTokenExpiry) });
+}
+
+/**
+ * Return refresh token.
+ *
+ * @param data
+ * @returns {string}
+ */
+export function generateRefreshToken(data) {
+  return jwt.sign({ data }, auth.refreshTokenSalt, { expiresIn: parseInt(auth.refreshTokenExpiry) });
+}
+
+/**
+ * Delete Token
+ *
+ * @param token
+ * @returns {Promise}
  */
 export function deleteToken(token) {
-  return new Token({ refresh: token })
-    .fetch()
-    .then(token => token ? token.destroy() : null);
+  return new Token().where({ refresh: token }).destroy({ require: true })
+    .then(() => {
+      return {
+        info: 'Logout Successful'
+      };
+    }).catch(() => {
+      throw Boom.unauthorized('Token Expired');
+    });
 }

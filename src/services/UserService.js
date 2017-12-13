@@ -2,7 +2,7 @@ import Boom from 'boom';
 import bcrypt from 'bcrypt';
 import User from '../models/User';
 import auth from '../config/auth';
-import { createToken, destroyToken } from './TokenService';
+import { createSession } from './TokenService';
 
 /**
  * Get all users.
@@ -57,7 +57,7 @@ export function register(user) {
     email: user.email,
     password: bcrypt.hashSync(user.password, parseInt(auth.saltRounds))
   }).save().then((user) => {
-    return createToken(user);
+    return createSession(user);
   });
 }
 
@@ -70,23 +70,9 @@ export function register(user) {
 export function login(currentUser) {
   return getUserByEmail(currentUser.email).then(user => {
     if (bcrypt.compareSync(currentUser.password, user.get('password'))) {
-      return createToken(user);
+      return createSession(user);
     }
   });
-}
-
-/**
- * Logout user.
- *
- * @param  token
- */
-export function logout(token) {
-  return destroyToken(token)
-    .then(() => {
-      return {
-        message: 'Logout Successful.'
-      };
-    });
 }
 
 /**

@@ -3,6 +3,7 @@ import config from '../config/app';
 import AuthController from '../controllers/AuthController';
 import UsersController from '../controllers/UsersController';
 import PostsController from '../controllers/PostsController';
+import { validateAccessToken } from '../validators/TokenValidator';
 
 /**
  * Contains all API routes for the application.
@@ -18,7 +19,7 @@ router.get('/', (request, response) => {
 
 router.use('/', AuthController);
 
-router.use('/users', UsersController);
-router.use('/posts', PostsController);
+router.use('/users', validateAccessToken, UsersController);
+router.use('/posts', validateAccessToken, PostsController);
 
 export default router;
