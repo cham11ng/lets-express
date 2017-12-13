@@ -11,7 +11,7 @@ const router = Router();
 router.get('/', (request, response, next) => {
   TagService
     .getAllTags(request.query.page)
-    .then(data => response.json({ data }))
+    .then(data => response.status(HttpStatus.OK).json({ results: data, pagination: data.pagination }))
     .catch(error => next(error));
 });
 

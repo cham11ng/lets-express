@@ -14,6 +14,10 @@ const SCHEMA = {
   userId: Joi.number()
     .integer()
     .label('User')
+    .required(),
+  tags: Joi.array()
+    .items(Joi.number())
+    .label('User')
     .required()
 };
 

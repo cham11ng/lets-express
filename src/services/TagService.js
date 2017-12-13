@@ -11,9 +11,7 @@ export function getAllTags(page = 1) {
   return Tag.fetchPage({
     page: page,
     pageSize: config.APP_PAGE_LIMIT
-  }).then(results => {
-    return Object.assign({}, { results }, { pagination: results.pagination });
-  });
+  }).then(results => results);
 }
 
 /**

@@ -37,7 +37,10 @@ export function createPost(post) {
     title: post.title,
     body: post.body,
     userId: post.userId
-  }).save().then(post => post.refresh());
+  }).save().then(result => {
+    result.tags().attach(post.tags);
+    return result.refresh();
+  });
 }
 
 /**
