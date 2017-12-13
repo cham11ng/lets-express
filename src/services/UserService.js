@@ -2,7 +2,7 @@ import Boom from 'boom';
 import bcrypt from 'bcrypt';
 import User from '../models/User';
 import auth from '../config/auth';
-import { createToken, destroyToken } from "./TokenService";
+import { createToken, destroyToken } from './TokenService';
 
 /**
  * Get all users.
@@ -81,7 +81,12 @@ export function login(currentUser) {
  * @param  token
  */
 export function logout(token) {
-  return destroyToken(token);
+  return destroyToken(token)
+    .then(() => {
+      return {
+        message: 'Logout Successful.'
+      };
+    });
 }
 
 /**

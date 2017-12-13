@@ -19,12 +19,11 @@ router.post('/login', loginValidator, (request, response, next) => {
     .catch(error => next(error));
 });
 
-router.post('/logout', (request, response) => {
-  if (UserService.logout(request.headers.authorization.substring(7))) {
-    return response.json({
-      message: 'Logout Successful.'
-    });
-  }
+router.post('/logout', (request, response, next) => {
+  UserService
+    .logout(request.headers.authorization.substring(7))
+    .then(data => response.status(HttpStatus.OK).json(data))
+    .catch(error => next(error));
 });
 
 export default router;
