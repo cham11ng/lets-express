@@ -1,7 +1,6 @@
 import { generateTokens, verifyRefreshToken } from '../utils/jwt';
 import Token from '../models/Token';
 import Boom from 'boom';
-import * as HttpStatus from 'http-status-codes';
 
 /**
  * Create token
@@ -14,6 +13,7 @@ export function createToken(user) {
   user.token().save({
     refresh: jwt.refreshToken
   });
+
   return jwt;
 }
 
@@ -22,10 +22,11 @@ export function createToken(user) {
  *
  * @param token
  */
-export function destroyToken(token) {
+export async function destroyToken(token) {
   try {
-    if (verifyRefreshToken(token)) {
+    if (await verifyRefreshToken(token)) {
       deleteToken(token);
+
       return true;
     }
   } catch(error) {
