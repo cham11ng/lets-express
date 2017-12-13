@@ -19,7 +19,7 @@ export function getAllPosts() {
 export function getPost(id) {
   return new Post({ id }).fetch({ withRelated: ['user'] }).then(post => {
     if (!post) {
-      throw new Boom.notFound('Post not found');
+      throw Boom.notFound('Post not found');
     }
 
     return post;

@@ -1,5 +1,5 @@
-import * as jwt from 'jsonwebtoken';
 import auth from '../config/auth';
+import * as jwt from 'jsonwebtoken';
 
 /**
  * Return access and refresh tokens.
