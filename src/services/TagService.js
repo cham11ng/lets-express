@@ -1,13 +1,19 @@
 import Boom from 'boom';
 import Tag from '../models/Tag';
+import config from '../config/app';
 
 /**
  * Get all tags.
  *
  * @return {Promise}
  */
-export function getAllTags() {
-  return Tag.fetchAll();
+export function getAllTags(page = 1) {
+  return Tag.fetchPage({
+    page: page,
+    pageSize: config.APP_PAGE_LIMIT
+  }).then(results => {
+    return Object.assign({}, { results }, { pagination: results.pagination });
+  });
 }
 
 /**

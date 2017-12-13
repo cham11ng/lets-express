@@ -10,7 +10,7 @@ const router = Router();
  */
 router.get('/', (request, response, next) => {
   TagService
-    .getAllTags()
+    .getAllTags(request.query.page)
     .then(data => response.json({ data }))
     .catch(error => next(error));
 });
