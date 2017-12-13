@@ -23,19 +23,6 @@ export function tagValidator(request, response, next) {
     .catch(err => next(err));
 }
 
-
-const LOGIN_SCHEMA = {
-  email: Joi.string()
-    .label('Email')
-    .max(90)
-    .required(),
-  password: Joi.string()
-    .label('Password')
-    .min(6)
-    .max(90)
-    .required()
-};
-
 /**
  * Validate tags existence.
  *
