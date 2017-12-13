@@ -1,6 +1,9 @@
+import Boom from 'boom';
 import { Router } from 'express';
 import * as HttpStatus from 'http-status-codes';
 import * as UserService from '../services/UserService';
+import * as TokenService from '../services/TokenService';
+import { validateRefreshToken } from '../validators/TokenValidator';
 import { loginValidator, userValidator } from '../validators/UserValidator';
 
 const router = Router();
@@ -19,9 +22,17 @@ router.post('/login', loginValidator, (request, response, next) => {
     .catch(error => next(error));
 });
 
-router.post('/logout', (request, response, next) => {
-  UserService
-    .logout(request.headers.authorization.substring(7))
+router.post('/token', validateRefreshToken, (request, response, next) => {
+  TokenService
+    .createAccessToken(request)
+    .then(data => response.status(HttpStatus.OK).json(data))
+    .catch(error => next(error));
+});
+
+
+router.post('/logout', validateRefreshToken, (request, response, next) => {
+  TokenService
+    .deleteToken(request.headers.authorization.substring(7))
     .then(data => response.status(HttpStatus.OK).json(data))
     .catch(error => next(error));
 });
