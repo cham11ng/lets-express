@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import config from '../config/app';
+import TagsController from '../controllers/TagsController';
 import AuthController from '../controllers/AuthController';
 import UsersController from '../controllers/UsersController';
 import PostsController from '../controllers/PostsController';
@@ -19,6 +20,7 @@ router.get('/', (request, response) => {
 
 router.use('/', AuthController);
 
+router.use('/tags', validateAccessToken, TagsController);
 router.use('/users', validateAccessToken, UsersController);
 router.use('/posts', validateAccessToken, PostsController);
 

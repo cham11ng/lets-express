@@ -1,3 +1,4 @@
+import Tag from "./Tag";
 import User from './User';
 import bookshelf from '../config/database';
 
@@ -17,6 +18,10 @@ class Post extends bookshelf.Model {
 
   user() {
     return this.belongsTo(User);
+  }
+
+  tags() {
+    return this.belongsToMany(Tag);
   }
 }
 
