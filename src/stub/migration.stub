@@ -6,7 +6,7 @@
  */
 export function up(knex, Promise) {
   return knex.schema.createTable('table_name', function(table) {
-    table.increments()->primary();
+    table.increments().primary();
     //
 
     table
