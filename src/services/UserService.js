@@ -2,7 +2,7 @@ import Boom from 'boom';
 import bcrypt from 'bcrypt';
 import User from '../models/User';
 import auth from '../config/auth';
-import { generateTokens } from '../utils/jwt';
+import { createToken, destroyToken } from "./TokenService";
 
 /**
  * Get all users.
@@ -22,7 +22,7 @@ export function getAllUsers() {
 export function getUser(id) {
   return new User({ id }).fetch({ withRelated: ['posts', 'token'] }).then(user => {
     if (!user) {
-      throw new Boom.notFound('User not found');
+      throw Boom.notFound('User not found');
     }
 
     return user;
@@ -38,7 +38,7 @@ export function getUser(id) {
 export function getUserByEmail(email) {
   return new User({ email }).fetch().then(user => {
     if (!user) {
-      throw new Boom.notFound('User not found');
+      throw Boom.notFound('User not found');
     }
 
     return user;
@@ -57,7 +57,7 @@ export function register(user) {
     email: user.email,
     password: bcrypt.hashSync(user.password, parseInt(auth.saltRounds))
   }).save().then((user) => {
-    return createSession(user);
+    return createToken(user);
   });
 }
 
@@ -70,20 +70,18 @@ export function register(user) {
 export function login(currentUser) {
   return getUserByEmail(currentUser.email).then(user => {
     if (bcrypt.compareSync(currentUser.password, user.get('password'))) {
-      return createSession(user);
+      return createToken(user);
     }
   });
 }
 
 /**
+ * Logout user.
  *
+ * @param  token
  */
-export function createSession(user) {
-  let jwt = generateTokens(user.refresh());
-  user.token().save({
-    refresh: jwt.refreshToken
-  });
-  return jwt;
+export function logout(token) {
+  return destroyToken(token);
 }
 
 /**
@@ -106,5 +104,11 @@ export function updateUser(id, user) {
  * @return {Promise}
  */
 export function deleteUser(id) {
-  return new User({ id }).fetch().then(user => user.destroy());
+  return new User({ id }).fetch().then(user => {
+    if (!user) {
+      throw Boom.notFound('User not found');
+    }
+
+    return user.destroy();
+  });
 }
