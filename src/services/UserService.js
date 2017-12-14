@@ -10,7 +10,7 @@ import { createSession } from './TokenService';
  * @return {Promise}
  */
 export function getAllUsers() {
-  return User.fetchAll({ withRelated: ['posts', 'token'] });
+  return User.fetchAll({ withRelated: ['token'] });
 }
 
 /**
@@ -43,6 +43,14 @@ export function getUserByEmail(email) {
 
     return user;
   });
+}
+
+export function hasToken(email) {
+  return new User({ email: email }).fetch({ withRelated: ['token'] })
+    .then(user => {
+      return user ? user.toJSON().token : {};
+    })
+    .catch(error => console.log(error));
 }
 
 /**
