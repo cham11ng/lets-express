@@ -1,6 +1,6 @@
 import Boom from 'boom';
 import Post from '../models/Post';
-import config from "../config/app";
+import config from '../config/app';
 
 /**
  * Get all posts.
@@ -43,6 +43,7 @@ export function createPost(post) {
     userId: post.userId
   }).save().then(result => {
     result.tags().attach(post.tags);
+
     return result.refresh();
   });
 }

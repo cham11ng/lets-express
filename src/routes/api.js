@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import config from '../config/app';
-import * as HTTPStatus from "http-status-codes";
+import * as HTTPStatus from 'http-status-codes';
 import * as SearchService from '../services/SearchService';
 import TagsController from '../controllers/TagsController';
 import AuthController from '../controllers/AuthController';
