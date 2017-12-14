@@ -10,8 +10,8 @@ const router = Router();
  */
 router.get('/', (request, response, next) => {
   PostService
-    .getAllPosts()
-    .then(data => response.json({ data }))
+    .getAllPosts(request.query.page)
+    .then(data => response.status(HttpStatus.OK).json({ data: data, pagination: data.pagination }))
     .catch(error => next(error));
 });
 

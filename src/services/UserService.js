@@ -3,14 +3,19 @@ import bcrypt from 'bcrypt';
 import User from '../models/User';
 import auth from '../config/auth';
 import { createSession } from './TokenService';
+import config from "../config/app";
 
 /**
  * Get all users.
  *
  * @return {Promise}
  */
-export function getAllUsers() {
-  return User.fetchAll({ withRelated: ['token'] });
+export function getAllUsers(page = 1) {
+  return User.fetchPage({
+    page: page,
+    pageSize: config.APP_PAGE_LIMIT,
+    withRelated: ['token']
+  }).then(results => results);
 }
 
 /**
