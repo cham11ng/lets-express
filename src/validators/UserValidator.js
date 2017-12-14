@@ -100,7 +100,7 @@ export function isNotAuthenticated(request, response, next) {
   return UserService
     .hasToken(request.body.email)
     .then((result) => {
-      Object.entries(result).length ? next(Boom.badData('Already authenticated')) : next();
+      result.length ? next(Boom.badData('Already authenticated')) : next();
     })
     .catch(err => next(err));
 }

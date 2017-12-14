@@ -15,8 +15,9 @@ export function getToken(token) {
       if (!token) {
         throw Boom.notFound('Tag not found');
       }
+
       return token;
-    })
+    });
 }
 
 /**

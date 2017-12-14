@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import User from '../models/User';
 import auth from '../config/auth';
 import { createSession } from './TokenService';
-import config from "../config/app";
+import config from '../config/app';
 
 /**
  * Get all users.
@@ -53,7 +53,7 @@ export function getUserByEmail(email) {
 export function hasToken(email) {
   return new User({ email: email }).fetch({ withRelated: ['token'] })
     .then(user => {
-      return user ? user.toJSON().token : {};
+      return Object.entries(user ? user.toJSON().token : {});
     })
     .catch(error => console.log(error));
 }

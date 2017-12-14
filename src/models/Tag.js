@@ -1,4 +1,4 @@
-import Post from "./Post";
+import Post from './Post';
 import bookshelf from '../config/database';
 
 const TABLE_NAME = 'tags';

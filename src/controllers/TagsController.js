@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as HttpStatus from 'http-status-codes';
 import * as TagService from '../services/TagService';
-import { findTag, tagValidator } from "../validators/TagValidator";
+import { findTag, tagValidator } from '../validators/TagValidator';
 
 const router = Router();
 

@@ -1,4 +1,4 @@
-import Tag from "./Tag";
+import Tag from './Tag';
 import User from './User';
 import bookshelf from '../config/database';
 
