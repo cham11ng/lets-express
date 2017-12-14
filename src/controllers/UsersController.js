@@ -26,16 +26,6 @@ router.get('/:id', (request, response, next) => {
 });
 
 /**
- * POST /api/users
- */
-router.post('/', userValidator, (request, response, next) => {
-  UserService
-    .createUser(request.body)
-    .then(data => response.status(HttpStatus.CREATED).json({ data }))
-    .catch(error => next(error));
-});
-
-/**
  * PUT /api/users/:id
  */
 router.put('/:id', findUser, userValidator, (request, response, next) => {

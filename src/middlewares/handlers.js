@@ -34,7 +34,6 @@ export function errorHandler(err, req, res, next) {
   res.status(error.code).json({ error });
 }
 
-
 /**
  * Build error response for validation errors.
  *

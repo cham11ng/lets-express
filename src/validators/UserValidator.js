@@ -19,6 +19,18 @@ const SCHEMA = {
     .required()
 };
 
+const LOGIN_SCHEMA = {
+  email: Joi.string()
+    .label('Email')
+    .max(90)
+    .required(),
+  password: Joi.string()
+    .label('Password')
+    .min(6)
+    .max(90)
+    .required()
+};
+
 /**
  * Validate create/update user request.
  *
@@ -33,18 +45,19 @@ export function userValidator(request, response, next) {
     .catch(err => next(err));
 }
 
-
-const LOGIN_SCHEMA = {
-  email: Joi.string()
-    .label('Email')
-    .max(90)
-    .required(),
-  password: Joi.string()
-    .label('Password')
-    .min(6)
-    .max(90)
-    .required()
-};
+/**
+ * Email unique validation
+ *
+ * @param request
+ * @param response
+ * @param next
+ * @returns {Promise}
+ */
+export function userEmailValidator(request, response, next) {
+  return UserService.getUserByEmail(request.body.email)
+    .then(() => next(Boom.badData('Email already exist')))
+    .catch(error => error.isBoom && error.output.statusCode === 404 ? next() : next(error));
+}
 
 /**
  * Validate user login request.

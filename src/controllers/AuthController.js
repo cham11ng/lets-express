@@ -3,11 +3,11 @@ import * as HttpStatus from 'http-status-codes';
 import * as UserService from '../services/UserService';
 import * as TokenService from '../services/TokenService';
 import { findToken, validateRefreshToken } from '../validators/TokenValidator';
-import { isNotAuthenticated, loginValidator, userValidator } from '../validators/UserValidator';
+import { isNotAuthenticated, loginValidator, userValidator, userEmailValidator } from '../validators/UserValidator';
 
 const router = Router();
 
-router.post('/register', userValidator, (request, response, next) => {
+router.post('/register', userValidator, userEmailValidator, (request, response, next) => {
   UserService
     .register(request.body)
     .then(data => response.status(HttpStatus.CREATED).json({ data }))
