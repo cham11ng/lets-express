@@ -7,6 +7,14 @@ import { isNotAuthenticated, loginValidator, userValidator, userEmailValidator }
 
 const router = Router();
 
+router.post('/email', userEmailValidator, (request, response) => {
+  return new Promise(() => {
+    response.status(HttpStatus.OK).json({
+      info: 'The given email is valid'
+    });
+  })
+});
+
 router.post('/register', userValidator, userEmailValidator, (request, response, next) => {
   UserService
     .register(request.body)
