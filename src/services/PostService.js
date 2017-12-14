@@ -1,13 +1,17 @@
 import Boom from 'boom';
 import Post from '../models/Post';
+import config from "../config/app";
 
 /**
  * Get all posts.
  *
  * @return {Promise}
  */
-export function getAllPosts() {
-  return Post.fetchAll();
+export function getAllPosts(page = 1) {
+  return Post.fetchPage({
+    page: page,
+    pageSize: config.APP_PAGE_LIMIT
+  }).then(collection => collection);
 }
 
 /**

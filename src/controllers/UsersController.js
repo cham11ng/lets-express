@@ -10,8 +10,8 @@ const router = Router();
  */
 router.get('/', (request, response, next) => {
   UserService
-    .getAllUsers()
-    .then(data => response.json({ data }))
+    .getAllUsers(request.query.page)
+    .then(data => response.json({ data: data, pagination: data.pagination }))
     .catch(error => next(error));
 });
 
