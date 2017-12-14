@@ -1,7 +1,7 @@
 import Boom from 'boom';
 import auth from '../config/auth';
-import Token from '../models/Token';
 import * as jwt from 'jsonwebtoken';
+import * as TokenService from '../services/TokenService';
 
 /**
  * Validate access token.
@@ -39,18 +39,12 @@ export function validateAccessToken(request, response, next) {
 export function validateRefreshToken(request, response, next) {
   if ('authorization' in request.headers) {
     let refreshToken = request.headers.authorization.substring(7);
-    new Token().where({ refresh: refreshToken }).count('refresh').then(count => {
-      if (count > 0) {
-        jwt.verify(refreshToken, auth.refreshTokenSalt, (error, decodedToken) => {
-          if (decodedToken) {
-            request.userInfo = decodedToken;
-            next();
-          } else if (error.name === 'TokenExpiredError') {
-            next(Boom.unauthorized('Token Expired'));
-          } else {
-            next(Boom.unauthorized('Invalid Token'));
-          }
-        });
+    jwt.verify(refreshToken, auth.refreshTokenSalt, (error, decodedToken) => {
+      if (decodedToken) {
+        request.userInfo = decodedToken;
+        next();
+      } else if (error.name === 'TokenExpiredError') {
+        next(Boom.unauthorized('Token Expired'));
       } else {
         next(Boom.unauthorized('Invalid Token'));
       }
@@ -58,4 +52,19 @@ export function validateRefreshToken(request, response, next) {
   } else {
     next(Boom.notAcceptable('Bad Request'));
   }
+}
+
+/**
+ * Validate tokens existence.
+ *
+ * @param  {object}   request
+ * @param  {object}   response
+ * @param  {function} next
+ * @return {Promise}
+ */
+export function findToken(request, response, next) {
+  return TokenService
+    .getToken(request.headers.authorization.substring(7))
+    .then(() => next())
+    .catch(() => next(Boom.unauthorized('Token Expired')));
 }

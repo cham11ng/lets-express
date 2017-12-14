@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import Boom from 'boom';
 import validate from '../utils/validate';
 import * as UserService from '../services/UserService';
 
@@ -71,5 +72,22 @@ export function findUser(request, response, next) {
   return UserService
     .getUser(request.params.id)
     .then(() => next())
+    .catch(err => next(err));
+}
+
+/**
+ * Check for not authenticate
+ *
+ * @param  {object}   request
+ * @param  {object}   response
+ * @param  {function} next
+ * @return {Promise}
+ */
+export function isNotAuthenticated(request, response, next) {
+  return UserService
+    .hasToken(request.body.email)
+    .then((result) => {
+      Object.entries(result).length ? next(Boom.badData('Already authenticated')) : next();
+    })
     .catch(err => next(err));
 }

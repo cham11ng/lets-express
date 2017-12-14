@@ -4,6 +4,22 @@ import Token from '../models/Token';
 import * as jwt from 'jsonwebtoken';
 
 /**
+ * Get Token
+ *
+ * @param token
+ * @returns {Promise}
+ */
+export function getToken(token) {
+  return new Token({ refresh: token }).fetch()
+    .then(token => {
+      if (!token) {
+        throw Boom.notFound('Tag not found');
+      }
+      return token;
+    })
+}
+
+/**
  * Create session
  *
  * @param user
