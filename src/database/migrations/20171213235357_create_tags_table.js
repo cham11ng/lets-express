@@ -10,9 +10,9 @@ export function up(knex, Promise) {
     table.string('name');
   }).createTable('posts_tags', function(table) {
     table.integer('post_id').unsigned().notNull();
-    table.foreign('post_id').references('posts.id');
+    table.foreign('post_id').references('posts.id').onDelete('cascade');
     table.integer('tag_id').unsigned().notNull();
-    table.foreign('tag_id').references('tags.id');
+    table.foreign('tag_id').references('tags.id').onDelete('cascade');
   });
 }
 

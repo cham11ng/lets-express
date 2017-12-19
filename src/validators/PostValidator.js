@@ -21,6 +21,22 @@ const SCHEMA = {
     .required()
 };
 
+const EDIT_SCHEMA = {
+  title: Joi.string()
+    .label('Title')
+    .max(90)
+    .required(),
+  body: Joi.string()
+    .label('Body')
+    .max(90)
+    .required(),
+  tags: Joi.array()
+    .items(Joi.number())
+    .label('User')
+    .required()
+};
+
+
 /**
  * Validate create/update post request.
  *
@@ -31,6 +47,20 @@ const SCHEMA = {
  */
 export function postValidator(request, response, next) {
   return validate(request.body, SCHEMA)
+    .then(() => next())
+    .catch(err => next(err));
+}
+
+/**
+ * Validate create/update post request.
+ *
+ * @param  {object}   request
+ * @param  {object}   response
+ * @param  {function} next
+ * @return {Promise}
+ */
+export function editValidator(request, response, next) {
+  return validate(request.body, EDIT_SCHEMA)
     .then(() => next())
     .catch(err => next(err));
 }

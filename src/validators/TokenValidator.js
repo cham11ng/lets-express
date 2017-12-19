@@ -44,9 +44,9 @@ export function validateRefreshToken(request, response, next) {
         request.userInfo = decodedToken;
         next();
       } else if (error.name === 'TokenExpiredError') {
-        next(Boom.unauthorized('Token Expired'));
+        next(Boom.notAcceptable('Bad Request'));
       } else {
-        next(Boom.unauthorized('Invalid Token'));
+        next(Boom.notAcceptable('Invalid Token'));
       }
     });
   } else {
@@ -66,5 +66,5 @@ export function findToken(request, response, next) {
   return TokenService
     .getToken(request.headers.authorization.substring(7))
     .then(() => next())
-    .catch(() => next(Boom.unauthorized('Token Expired')));
+    .catch(() => next(Boom.notAcceptable('Token Expired')));
 }

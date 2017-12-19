@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express from 'express';
 import api from './routes/api';
 import config from './config/app';
@@ -6,6 +7,7 @@ import { errorHandler } from './middlewares/handlers';
 
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use('/api', api);
 

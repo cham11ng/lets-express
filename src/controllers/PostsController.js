@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as HttpStatus from 'http-status-codes';
 import * as PostService from '../services/PostService';
-import { findPost, postValidator } from '../validators/PostValidator';
+import { findPost, editValidator, postValidator } from '../validators/PostValidator';
 
 const router = Router();
 
@@ -38,10 +38,10 @@ router.post('/', postValidator, (request, response, next) => {
 /**
  * PUT /api/posts/:id
  */
-router.put('/:id', findPost, postValidator, (request, response, next) => {
+router.put('/:id', findPost, editValidator, (request, response, next) => {
   PostService
     .updatePost(request.params.id, request.body)
-    .then(data => response.json({ data }))
+    .then(data => response.status(HttpStatus.OK).json({ data }))
     .catch(error => next(error));
 });
 

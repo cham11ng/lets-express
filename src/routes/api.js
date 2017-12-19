@@ -35,5 +35,5 @@ router.use('/', AuthController);
 router.use('/tags', validateAccessToken, TagsController);
 router.use('/users', validateAccessToken, UsersController);
 router.use('/posts', validateAccessToken, PostsController);
-
+                                                                                                                                                                                                                                                                                                                                                                                    
 export default router;
