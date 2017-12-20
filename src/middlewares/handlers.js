@@ -44,8 +44,8 @@ export function convertExceptionToJSONResponse(error) {
   // Validation errors
   if (error.isJoi) {
     return {
-      code: HttpStatus.BAD_REQUEST,
-      message: HttpStatus.getStatusText(HttpStatus.BAD_REQUEST),
+      code: HttpStatus.UNPROCESSABLE_ENTITY,
+      message: HttpStatus.getStatusText(HttpStatus.UNPROCESSABLE_ENTITY),
       details:
       error.details &&
       error.details.map(error => {

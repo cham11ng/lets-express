@@ -5,11 +5,10 @@ import * as PostService from '../services/PostService';
 const SCHEMA = {
   title: Joi.string()
     .label('Title')
-    .max(90)
+    .max(120)
     .required(),
   body: Joi.string()
     .label('Body')
-    .max(90)
     .required(),
   userId: Joi.number()
     .integer()
@@ -24,11 +23,10 @@ const SCHEMA = {
 const EDIT_SCHEMA = {
   title: Joi.string()
     .label('Title')
-    .max(90)
+    .max(120)
     .required(),
   body: Joi.string()
     .label('Body')
-    .max(90)
     .required(),
   tags: Joi.array()
     .items(Joi.number())
