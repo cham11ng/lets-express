@@ -14,7 +14,7 @@ router.post('/email', userEmailValidator, (request, response) => {
 router.post('/register', userValidator, userEmailValidator, (request, response, next) => {
   UserService
     .register(request.body)
-    .then(data => response.status(HttpStatus.CREATED).json({ data }))
+    .then(data => response.status(HttpStatus.CREATED).json(data))
     .catch(error => next(error));
 });
 
