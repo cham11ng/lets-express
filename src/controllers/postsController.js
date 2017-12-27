@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as HttpStatus from 'http-status-codes';
-import * as PostService from '../services/PostService';
-import { findPost, editValidator, postValidator } from '../validators/PostValidator';
+import * as postService from '../services/postService';
+import { findPost, editValidator, postValidator } from '../validators/postValidator';
 
 const router = Router();
 
@@ -9,7 +9,7 @@ const router = Router();
  * GET /api/posts
  */
 router.get('/', (request, response, next) => {
-  PostService
+  postService
     .getAllPosts(request.query.page)
     .then(data => response.status(HttpStatus.OK).json({ data: data, pagination: data.pagination }))
     .catch(error => next(error));
@@ -19,7 +19,7 @@ router.get('/', (request, response, next) => {
  * GET /api/posts/:id
  */
 router.get('/:id', (request, response, next) => {
-  PostService
+  postService
     .getPost(request.params.id)
     .then(data => response.json({ data }))
     .catch(error => next(error));
@@ -29,7 +29,7 @@ router.get('/:id', (request, response, next) => {
  * POST /api/posts
  */
 router.post('/', postValidator, (request, response, next) => {
-  PostService
+  postService
     .createPost(request.body)
     .then(data => response.status(HttpStatus.CREATED).json({ data }))
     .catch(error => next(error));
@@ -39,7 +39,7 @@ router.post('/', postValidator, (request, response, next) => {
  * PUT /api/posts/:id
  */
 router.put('/:id', findPost, editValidator, (request, response, next) => {
-  PostService
+  postService
     .updatePost(request.params.id, request.body)
     .then(data => response.status(HttpStatus.OK).json({ data }))
     .catch(error => next(error));
@@ -49,7 +49,7 @@ router.put('/:id', findPost, editValidator, (request, response, next) => {
  * DELETE /api/posts/:id
  */
 router.delete('/:id', findPost, (request, response, next) => {
-  PostService
+  postService
     .deletePost(request.params.id)
     .then(data => response.status(HttpStatus.NO_CONTENT).json({ data }))
     .catch(error => next(error));

@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import config from '../config/app';
 import * as HTTPStatus from 'http-status-codes';
-import * as SearchService from '../services/SearchService';
-import TagsController from '../controllers/TagsController';
-import AuthController from '../controllers/AuthController';
-import UsersController from '../controllers/UsersController';
-import PostsController from '../controllers/PostsController';
-import { validateAccessToken } from '../validators/TokenValidator';
+import * as SearchService from '../services/searchService';
+import tagsController from '../controllers/tagsController';
+import authController from '../controllers/authController';
+import usersController from '../controllers/usersController';
+import postsController from '../controllers/postsController';
+import { validateAccessToken } from '../validators/tokenValidator';
 
 /**
  * Contains all API routes for the application.
@@ -30,10 +30,10 @@ router.get('/', (request, response) => {
   });
 });
 
-router.use('/', AuthController);
+router.use('/', authController);
 
-router.use('/tags', validateAccessToken, TagsController);
-router.use('/users', validateAccessToken, UsersController);
-router.use('/posts', validateAccessToken, PostsController);
-                                                                                                                                                                                                                                                                                                                                                                                    
+router.use('/tags', validateAccessToken, tagsController);
+router.use('/users', validateAccessToken, usersController);
+router.use('/posts', validateAccessToken, postsController);
+
 export default router;

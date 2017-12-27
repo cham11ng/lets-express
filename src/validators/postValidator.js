@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import validate from '../utils/validate';
-import * as PostService from '../services/PostService';
+import * as postService from '../services/postService';
 
 const SCHEMA = {
   title: Joi.string()
@@ -72,7 +72,7 @@ export function editValidator(request, response, next) {
  * @return {Promise}
  */
 export function findPost(request, response, next) {
-  return PostService
+  return postService
     .getPost(request.params.id)
     .then(() => next())
     .catch(err => next(err));

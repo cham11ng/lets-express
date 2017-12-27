@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as HttpStatus from 'http-status-codes';
-import * as TagService from '../services/TagService';
-import { findTag, tagValidator } from '../validators/TagValidator';
+import * as tagService from '../services/tagService';
+import { findTag, tagValidator } from '../validators/tagValidator';
 
 const router = Router();
 
@@ -9,7 +9,7 @@ const router = Router();
  * GET /api/tags
  */
 router.get('/', (request, response, next) => {
-  TagService
+  tagService
     .getAllTags(request.query.page)
     .then(data => response.status(HttpStatus.OK).json({ results: data, pagination: data.pagination }))
     .catch(error => next(error));
@@ -19,7 +19,7 @@ router.get('/', (request, response, next) => {
  * GET /api/tags/:id
  */
 router.get('/:id', (request, response, next) => {
-  TagService
+  tagService
     .getTag(request.params.id)
     .then(data => response.json({ data }))
     .catch(error => next(error));
@@ -29,7 +29,7 @@ router.get('/:id', (request, response, next) => {
  * POST /api/tags
  */
 router.post('/', tagValidator, (request, response, next) => {
-  TagService
+  tagService
     .createTag(request.body)
     .then(data => response.status(HttpStatus.CREATED).json({ data }))
     .catch(error => next(error));
@@ -39,7 +39,7 @@ router.post('/', tagValidator, (request, response, next) => {
  * PUT /api/tags/:id
  */
 router.put('/:id', findTag, tagValidator, (request, response, next) => {
-  TagService
+  tagService
     .updateTag(request.params.id, request.body)
     .then(data => response.json({ data }))
     .catch(error => next(error));
@@ -49,7 +49,7 @@ router.put('/:id', findTag, tagValidator, (request, response, next) => {
  * DELETE /api/tags/:id
  */
 router.delete('/:id', findTag, (request, response, next) => {
-  TagService
+  tagService
     .deleteTag(request.params.id)
     .then(data => response.status(HttpStatus.NO_CONTENT).json({ data }))
     .catch(error => next(error));

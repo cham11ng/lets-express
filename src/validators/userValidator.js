@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import Boom from 'boom';
 import validate from '../utils/validate';
-import * as UserService from '../services/UserService';
+import * as userService from '../services/userService';
 
 const SCHEMA = {
   name: Joi.string()
@@ -54,7 +54,7 @@ export function userValidator(request, response, next) {
  * @returns {Promise}
  */
 export function userEmailValidator(request, response, next) {
-  return UserService.getUserByEmail(request.body.email)
+  return userService.getUserByEmail(request.body.email)
     .then(() => next(Boom.badData('Email already exist')))
     .catch(error => error.isBoom && error.output.statusCode === 404 ? next() : next(error));
 }
@@ -82,7 +82,7 @@ export function loginValidator(request, response, next) {
  * @return {Promise}
  */
 export function findUser(request, response, next) {
-  return UserService
+  return userService
     .getUser(request.params.id)
     .then(() => next())
     .catch(err => next(err));
@@ -97,7 +97,7 @@ export function findUser(request, response, next) {
  * @return {Promise}
  */
 export function isNotAuthenticated(request, response, next) {
-  return UserService
+  return userService
     .hasToken(request.body.email)
     .then((result) => {
       result.length ? next(Boom.badData('Already authenticated')) : next();

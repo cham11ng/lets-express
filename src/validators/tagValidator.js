@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import validate from '../utils/validate';
-import * as TagService from '../services/TagService';
+import * as tagService from '../services/tagService';
 
 const SCHEMA = {
   name: Joi.string()
@@ -32,7 +32,7 @@ export function tagValidator(request, response, next) {
  * @return {Promise}
  */
 export function findTag(request, response, next) {
-  return TagService
+  return tagService
     .getTag(request.params.id)
     .then(() => next())
     .catch(err => next(err));

@@ -1,7 +1,7 @@
 import Boom from 'boom';
 import auth from '../config/auth';
 import * as jwt from 'jsonwebtoken';
-import * as TokenService from '../services/TokenService';
+import * as tokenService from '../services/tokenService';
 
 /**
  * Validate access token.
@@ -63,7 +63,7 @@ export function validateRefreshToken(request, response, next) {
  * @return {Promise}
  */
 export function findToken(request, response, next) {
-  return TokenService
+  return tokenService
     .getToken(request.headers.authorization.substring(7))
     .then(() => next())
     .catch(() => next(Boom.notAcceptable('Token Expired')));

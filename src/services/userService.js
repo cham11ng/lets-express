@@ -2,7 +2,7 @@ import Boom from 'boom';
 import bcrypt from 'bcrypt';
 import User from '../models/User';
 import auth from '../config/auth';
-import { createSession } from './TokenService';
+import { createSession } from './tokenService';
 import config from '../config/app';
 
 /**

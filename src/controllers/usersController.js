@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as HttpStatus from 'http-status-codes';
-import * as UserService from '../services/UserService';
-import { findUser, userValidator } from '../validators/UserValidator';
+import * as userService from '../services/userService';
+import { findUser, userValidator } from '../validators/userValidator';
 
 const router = Router();
 
@@ -9,7 +9,7 @@ const router = Router();
  * GET /api/users
  */
 router.get('/', (request, response, next) => {
-  UserService
+  userService
     .getAllUsers(request.query.page)
     .then(data => response.json({ data: data, pagination: data.pagination }))
     .catch(error => next(error));
@@ -19,7 +19,7 @@ router.get('/', (request, response, next) => {
  * GET /api/users/:id
  */
 router.get('/:id', (request, response, next) => {
-  UserService
+  userService
     .getUser(request.params.id)
     .then(data => response.json({ data }))
     .catch(error => next(error));
@@ -29,7 +29,7 @@ router.get('/:id', (request, response, next) => {
  * PUT /api/users/:id
  */
 router.put('/:id', findUser, userValidator, (request, response, next) => {
-  UserService
+  userService
     .updateUser(request.params.id, request.body)
     .then(data => response.json({ data }))
     .catch(error => next(error));
@@ -39,7 +39,7 @@ router.put('/:id', findUser, userValidator, (request, response, next) => {
  * DELETE /api/users/:id
  */
 router.delete('/:id', findUser, (request, response, next) => {
-  UserService
+  userService
     .deleteUser(request.params.id)
     .then(data => response.status(HttpStatus.NO_CONTENT).json({ data }))
     .catch(error => next(error));
